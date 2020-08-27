@@ -11,12 +11,34 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
+  "globals": {
+    "fetch": false
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
+    "global-require": "off",
+    "comma-dangle": ["error", "never"],
     "import/prefer-default-export": ["off"],
     "react/jsx-filename-extension": [
       1,
       { "extensions": [".js", ".jsx", ".tsx"] }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
     ]
   }
 }

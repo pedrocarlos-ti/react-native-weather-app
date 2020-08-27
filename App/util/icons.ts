@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 // Simple switch method which takes in an icon name and returns
 // an actual source to the icon image
 export const getWeatherIcon = (icon) => {

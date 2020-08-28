@@ -23,7 +23,8 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "global-require": "off",
+    "global-require": ["off"],
+    "implicit-arrow-linebreak": ["off"],
     "comma-dangle": ["error", "never"],
     "import/prefer-default-export": ["off"],
     "react/jsx-filename-extension": [

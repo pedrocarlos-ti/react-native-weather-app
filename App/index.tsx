@@ -8,7 +8,7 @@ import {
 } from '@react-navigation/stack';
 
 import Details from './screens/Details';
-import { Search } from './screens/Search';
+import Search from './screens/Search';
 
 const Stack = createStackNavigator();
 
@@ -32,7 +32,7 @@ const HeaderRightButton = ({ onPress, style = {}, icon }) => (
 
 const AppStack = () => (
   <NavigationContainer>
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Search">
       <Stack.Screen
         name="Details"
         component={Details}

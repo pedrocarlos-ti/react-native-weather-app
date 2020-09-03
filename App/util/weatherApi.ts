@@ -19,12 +19,6 @@ export const weatherApi = (path: String, { zipcode, coords }: Weather) => {
     suffix = `lat=${coords.latitude}&lon=${coords.longitude}`;
   }
 
-  console.log('oi');
-
-  console.log(
-    `http://api.openweathermap.org/data/2.5${path}?APPID=${API_KEY}&lang=pt_br&units=metric&${suffix}`
-  );
-
   return fetch(
     `http://api.openweathermap.org/data/2.5${path}?APPID=${API_KEY}&lang=pt_br&units=metric&${suffix}`
   ).then((response) => response.json());

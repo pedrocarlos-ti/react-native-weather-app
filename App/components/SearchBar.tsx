@@ -28,7 +28,7 @@ export const SearchBar = ({
       borderWidth: 1,
       borderColor: '#ddd',
       backgroundColor: '#eee',
-      alignItems: 'center',
+      alignItems: 'center'
     }}
   >
     {/* Magnifying glass icon */}
@@ -39,14 +39,14 @@ export const SearchBar = ({
         width: 20,
         height: 20,
         marginRight: 10,
-        tintColor: 'rgba(0, 0, 0, 0.4)',
+        tintColor: 'rgba(0, 0, 0, 0.4)'
       }}
     />
     {/* Actual text input specifying number pad keyboard to be launched */}
     <TextInput
       style={{
         fontSize: 18,
-        flex: 1,
+        flex: 1
       }}
       keyboardType="number-pad"
       {...props}
@@ -55,7 +55,7 @@ export const SearchBar = ({
     <TouchableOpacity onPress={onSearch} disabled={!searchButtonEnabled}>
       <Text
         style={{
-          color: searchButtonEnabled ? '#147efb' : 'rgba(0, 0, 0, 0.5)',
+          color: searchButtonEnabled ? '#147efb' : 'rgba(0, 0, 0, 0.5)'
         }}
       >
         Get Weather

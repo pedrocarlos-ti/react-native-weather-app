@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View, Alert } from 'react-native';
 import { format } from 'date-fns';
 
 import { weatherApi, Weather } from '../util/weatherApi';
@@ -7,6 +7,7 @@ import { Container } from '../components/Container';
 import { WeatherIcon } from '../components/WeatherIcon';
 import { BasicRow } from '../components/List';
 import { H1, H2, P } from '../components/Text';
+import { addRecentSearch } from '../util/recentSearch';
 
 const groupForecastByday = (list) => {
   const data = {};
@@ -58,26 +59,65 @@ export default class Details extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const oldLat = prevProps.route.params?.lat;
+    const lat = this.props.route.params?.lat;
+
+    const oldLon = prevProps.route.params?.lon;
+    const lon = this.props.route.params?.lon;
+
+    const oldZipcode = prevProps.route.params?.zipcode;
+    const zipcode = this.props.route.params?.zipcode;
+
+    if (lat && oldLat !== lat && lon && oldLon !== lon) {
+      this.getCurrentWeather({ coords: { latitude: lat, longitude: lon } });
+      this.getForecast({ coords: { latitude: lat, longitude: lon } });
+    } else if (zipcode && oldZipcode !== zipcode) {
+      this.getCurrentWeather({ zipcode });
+      this.getForecast({ zipcode });
+    }
+  }
+
+  handleError = () =>
+    Alert.alert('No location data found', 'Please try again', [
+      {
+        text: 'okay',
+        onPress: () => this.props.navigation.push('Search')
+      }
+    ]);
+
   getCurrentWeather = ({ zipcode, coords }: Weather) =>
     weatherApi('/weather', { zipcode, coords })
       .then((response) => {
-        this.props.navigation.setOptions({ title: response.name });
-        this.setState({
-          currentWeather: response,
-          loadingCurrentWeather: false
-        });
+        if (response.cod === '404') {
+          this.handleError();
+        } else {
+          this.props.navigation.setOptions({ title: response.name });
+          this.setState({
+            currentWeather: response,
+            loadingCurrentWeather: false
+          });
+          addRecentSearch({
+            id: `${response.id}-${response.name}`,
+            name: response.name,
+            lat: response.coord.lat,
+            lon: response.coord.lon
+          });
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => this.handleError());
 
   getForecast = ({ zipcode, coords }: Weather) =>
     weatherApi('/forecast', { zipcode, coords })
       .then((response) => {
-        this.setState({
-          loadingForecast: false,
-          forecast: groupForecastByday(response.list)
-        });
+        if (response.cod !== '404') {
+          this.setState({
+            loadingForecast: false,
+            forecast: groupForecastByday(response.list)
+          });
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => this.handleError());
 
   render() {
     if (this.state.loadingCurrentWeather) {

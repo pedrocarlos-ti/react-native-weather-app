@@ -1,7 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { TouchableOpacity, Image } from 'react-native';
+import { TouchableOpacity, Image, TextInput, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { enableScreens } from 'react-native-screens';
 import {
   createStackNavigator,
   CardStyleInterpolators
@@ -9,6 +10,8 @@ import {
 
 import Details from './screens/Details';
 import Search from './screens/Search';
+
+enableScreens();
 
 const Stack = createStackNavigator();
 
@@ -32,7 +35,7 @@ const HeaderRightButton = ({ onPress, style = {}, icon }) => (
 
 const AppStack = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="Search">
+    <Stack.Navigator initialRouteName="Details">
       <Stack.Screen
         name="Details"
         component={Details}
@@ -62,6 +65,7 @@ const AppStack = () => (
           gestureEnabled: true,
           title: 'Procurar',
           headerTitleAlign: 'center',
+          headerStatusBarHeight: 0,
           headerLeft: () => null,
           headerRight: () => (
             <HeaderRightButton
